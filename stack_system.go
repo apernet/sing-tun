@@ -141,18 +141,16 @@ func (s *System) start() error {
 	return nil
 }
 
-func (s *System) tunLoop() {
+func (s *System) tunLoop() error {
 	if winTun, isWinTun := s.tun.(WinTun); isWinTun {
-		s.wintunLoop(winTun)
-		return
+		return s.wintunLoop(winTun)
 	}
 	if linuxTUN, isLinuxTUN := s.tun.(LinuxTUN); isLinuxTUN {
 		s.frontHeadroom = linuxTUN.FrontHeadroom()
 		s.txChecksumOffload = linuxTUN.TXChecksumOffload()
 		batchSize := linuxTUN.BatchSize()
 		if batchSize > 1 {
-			s.batchLoop(linuxTUN, batchSize)
-			return
+			return s.batchLoop(linuxTUN, batchSize)
 		}
 	}
 	packetBuffer := make([]byte, s.mtu+PacketOffset)
@@ -160,7 +158,7 @@ func (s *System) tunLoop() {
 		n, err := s.tun.Read(packetBuffer)
 		if err != nil {
 			if E.IsClosed(err) {
-				return
+				return err
 			}
 			s.logger.Error(E.Cause(err, "read packet"))
 		}
@@ -178,11 +176,11 @@ func (s *System) tunLoop() {
 	}
 }
 
-func (s *System) wintunLoop(winTun WinTun) {
+func (s *System) wintunLoop(winTun WinTun) error {
 	for {
 		packet, release, err := winTun.ReadPacket()
 		if err != nil {
-			return
+			return err
 		}
 		if len(packet) < clashtcpip.IPv4PacketMinLength {
 			release()
@@ -198,7 +196,7 @@ func (s *System) wintunLoop(winTun WinTun) {
 	}
 }
 
-func (s *System) batchLoop(linuxTUN LinuxTUN, batchSize int) {
+func (s *System) batchLoop(linuxTUN LinuxTUN, batchSize int) error {
 	packetBuffers := make([][]byte, batchSize)
 	writeBuffers := make([][]byte, batchSize)
 	packetSizes := make([]int, batchSize)
@@ -208,8 +206,8 @@ func (s *System) batchLoop(linuxTUN LinuxTUN, batchSize int) {
 	for {
 		n, err := linuxTUN.BatchRead(packetBuffers, s.frontHeadroom, packetSizes)
 		if err != nil {
-			if E.IsClosed(err) {
-				return
+			if E.IsClosed(err) || E.IsMulti(err, errBadFd) || isErrNotPollable(err) {
+				return err
 			}
 			s.logger.Error(E.Cause(err, "batch read packet"))
 		}
