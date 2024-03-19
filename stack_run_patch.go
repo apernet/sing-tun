@@ -1,9 +1,5 @@
 package tun
 
-import (
-	"errors"
-)
-
 type StackRunner interface {
 	Stack
 	Run() error
@@ -17,6 +13,5 @@ func (s *System) Run() error {
 	if err != nil {
 		return err
 	}
-	s.tunLoop()
-	return errors.New("tun loop exited")
+	return s.tunLoop()
 }
