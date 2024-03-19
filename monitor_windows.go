@@ -3,7 +3,7 @@ package tun
 import (
 	"sync"
 
-	"github.com/sagernet/sing-tun/internal/winipcfg"
+	"github.com/apernet/sing-tun/internal/winipcfg"
 	E "github.com/sagernet/sing/common/exceptions"
 	"github.com/sagernet/sing/common/logger"
 	"github.com/sagernet/sing/common/x/list"

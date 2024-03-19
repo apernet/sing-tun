@@ -7,7 +7,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/sagernet/sing-tun/internal/clashtcpip"
+	"github.com/apernet/sing-tun/internal/clashtcpip"
 	"github.com/sagernet/sing/common"
 	"github.com/sagernet/sing/common/buf"
 	"github.com/sagernet/sing/common/control"

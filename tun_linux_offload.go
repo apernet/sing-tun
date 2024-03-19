@@ -15,7 +15,7 @@ import (
 	"io"
 	"unsafe"
 
-	"github.com/sagernet/sing-tun/internal/clashtcpip"
+	"github.com/apernet/sing-tun/internal/clashtcpip"
 	E "github.com/sagernet/sing/common/exceptions"
 
 	"golang.org/x/sys/unix"

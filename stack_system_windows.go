@@ -4,7 +4,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/sagernet/sing-tun/internal/winfw"
+	"github.com/apernet/sing-tun/internal/winfw"
 )
 
 func fixWindowsFirewall() error {
