@@ -3,7 +3,7 @@ package tun
 import (
 	"strconv"
 
-	"github.com/sagernet/sing-tun/internal/clashtcpip"
+	"github.com/apernet/sing-tun/internal/clashtcpip"
 	F "github.com/sagernet/sing/common/format"
 	N "github.com/sagernet/sing/common/network"
 )

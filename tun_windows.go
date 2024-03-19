@@ -12,9 +12,9 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/sagernet/sing-tun/internal/winipcfg"
-	"github.com/sagernet/sing-tun/internal/winsys"
-	"github.com/sagernet/sing-tun/internal/wintun"
+	"github.com/apernet/sing-tun/internal/winipcfg"
+	"github.com/apernet/sing-tun/internal/winsys"
+	"github.com/apernet/sing-tun/internal/wintun"
 	"github.com/sagernet/sing/common"
 	"github.com/sagernet/sing/common/atomic"
 	"github.com/sagernet/sing/common/buf"
