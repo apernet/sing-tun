@@ -72,19 +72,11 @@ func (t *NativeTun) configure() error {
 		if err != nil {
 			return E.Cause(err, "set ipv4 address")
 		}
-		err = luid.SetDNS(winipcfg.AddressFamily(windows.AF_INET), []netip.Addr{t.options.Inet4Address[0].Addr().Next()}, nil)
-		if err != nil {
-			return E.Cause(err, "set ipv4 dns")
-		}
 	}
 	if len(t.options.Inet6Address) > 0 {
 		err := luid.SetIPAddressesForFamily(winipcfg.AddressFamily(windows.AF_INET6), t.options.Inet6Address)
 		if err != nil {
 			return E.Cause(err, "set ipv6 address")
-		}
-		err = luid.SetDNS(winipcfg.AddressFamily(windows.AF_INET6), []netip.Addr{t.options.Inet6Address[0].Addr().Next()}, nil)
-		if err != nil {
-			return E.Cause(err, "set ipv6 dns")
 		}
 	}
 	if len(t.options.Inet4Address) > 0 || len(t.options.Inet6Address) > 0 {
